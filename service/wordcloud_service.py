@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 
 import dao.review_dao as review_dao
@@ -24,6 +23,13 @@ def get_wordcloud_by_game_name_like(name):
 
 def get_wordcloud_by_publisher_name_like(name):
     data = review_dao.get_list_review_bodies_by_publisher_name_like(name)
+    text = " ".join(review[0] for review in data)
+    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
+    return wordcloud
+
+
+def get_wordcloud_by_media_name(name):
+    data = review_dao.get_list_review_bodies_by_media_name(name)
     text = " ".join(review[0] for review in data)
     wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
     return wordcloud

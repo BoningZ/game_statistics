@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud, STOPWORDS
+import io
+import base64
 
 stopwords = set(STOPWORDS)
-with open('..\\util\\stopwords.txt', 'r', encoding='utf-8') as f:
+with open('.\\util\\stopwords.txt', 'r', encoding='utf-8') as f:
     stopwords.update([line.strip() for line in f])
 
 
@@ -16,19 +18,19 @@ def draw_year_label_bars(data, title):
         label_index = labels.index(row[1])
         counts[year_index][label_index] = row[2]
 
-    fig, ax = plt.subplots(figsize=(10, 6))  # 设置画布大小
+    fig, ax = plt.subplots(figsize=(10, 6))
     fig.set_size_inches(20, 8)
-    bar_width = 0.8 / len(labels)  # 计算每个平台的条形宽度
+    bar_width = 0.8 / len(labels)
     for i, label in enumerate(labels):
-        x = [j + i * bar_width for j in range(len(years))]  # 计算当前平台的x坐标
-        ax.bar(x, [count[i] for count in counts], width=bar_width, label=label)  # 绘制当前平台的条形图
-    ax.set_xticks([j + (len(labels) - 1) * bar_width / 2 for j in range(len(years))])  # 设置x轴刻度
-    ax.set_xticklabels(years)  # 设置x轴标签
-    ax.legend()  # 添加图例
-    ax.set_xlabel('Year')  # 设置x轴标签
-    ax.set_ylabel('Count')  # 设置y轴标签
-    ax.set_title(title)  # 设置标题
-    plt.show()  # 显示图形
+        x = [j + i * bar_width for j in range(len(years))]
+        ax.bar(x, [count[i] for count in counts], width=bar_width, label=label)
+    ax.set_xticks([j + (len(labels) - 1) * bar_width / 2 for j in range(len(years))])
+    ax.set_xticklabels(years)
+    ax.legend()
+    ax.set_xlabel('Year')
+    ax.set_ylabel('Count')
+    ax.set_title(title)
+    return to_url()
 
 
 def draw_score_scatter(data, title):
@@ -49,8 +51,7 @@ def draw_score_scatter(data, title):
     ax.set_ylabel('Userscore')
     ax.set_title(title)
     ax.legend()
-
-    plt.show()
+    return to_url()
 
 
 def draw_score_date_line(data, title):
@@ -66,7 +67,7 @@ def draw_score_date_line(data, title):
     ax.legend()
     ax.set_title(title)
     fig.set_size_inches(20, 8)
-    plt.show()
+    return to_url()
 
 
 def draw_count_pie(data, title):
@@ -91,13 +92,13 @@ def draw_count_pie(data, title):
         axes[i].title.set_position([0.5, y + 10.1])
     plt.suptitle(title, fontsize=16)
     plt.subplots_adjust(wspace=0.2)
-    plt.show()
+    return to_url()
 
 
 def draw_score_box(data, title, x_label):
     data = {"name": [row[0] for row in data], "score": [row[1] for row in data]}
     sns.set(style='ticks')
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(15, 6))
 
     sns.boxplot(data=data, x='name', y='score', ax=ax)
     ax.set_title(title)
@@ -107,7 +108,7 @@ def draw_score_box(data, title, x_label):
     ax.tick_params(axis='x', labelsize=8)
     sns.despine(trim=True)
     plt.tight_layout()
-    plt.show()
+    return to_url()
 
 
 def draw_word_cloud(data):
@@ -115,4 +116,12 @@ def draw_word_cloud(data):
     wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
-    plt.show()
+    return to_url()
+
+
+def to_url():
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode()
+    return plot_url

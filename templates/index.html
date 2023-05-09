@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>电子游戏数据统计</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <form method="POST" action="/plot" class="form">
+        <label for="input-id">输入：</label>
+        <input type="text" id="input-id" name="input">
+        <br>
+        <label>词云：</label>
+        <div class="button-group">
+            <div class="button-with-label">
+                <button type="submit" name="button" value="cloud_score_range">分数范围</button>
+                <div class="label">60,80</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="cloud_media_name">媒体名称</button>
+                <div class="label">IGN</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="cloud_game_name">游戏名称</button>
+                <div class="label">Zelda</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="cloud_publisher_name">发行商名称</button>
+                <div class="label">Rockstar</div>
+            </div>
+        </div>
+        <br>
+        <label>历年发售条形图：</label>
+        <div class="button-group">
+            <div class="button-with-label">
+                <button type="submit" name="button" value="bar_platform_name">平台名称</button>
+                <div class="label">PlayStation,Xbox</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="bar_rating">ESRB评级</button>
+                <div class="label">（无需输入）</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="bar_publisher_name">发行商名称</button>
+                <div class="label">Nintendo,Microsoft</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="bar_genre">游戏类型</button>
+                <div class="label">9,5（从第十多起的五种类型）</div>
+            </div>
+        </div>
+        <br>
+        <label>评级占比饼图：</label>
+        <div class="button-group">
+            <div class="button-with-label">
+                <button type="submit" name="button" value="pie_platform_name">平台名称</button>
+                <div class="label">PlayStation,Xbox</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="pie_publisher_name">发行商名称</button>
+                <div class="label">Nintendo,Microsoft</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="pie_cast">制作人</button>
+                <div class="label">9,5（从第十多起的五个人）</div>
+            </div>
+        </div>
+        <br>
+        <label>媒体评分箱型图：</label>
+        <div class="button-group">
+            <div class="button-with-label">
+                <button type="submit" name="button" value="box_rating">ESRB评级</button>
+                <div class="label">（无需输入）</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="box_descriptor">ESRB描述符</button>
+                <div class="label">（无需输入）</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="box_media">媒体</button>
+                <div class="label">9,5（从第十多起的五个媒体）</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="box_game_name">游戏名称</button>
+                <div class="label">Resident Evil</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="box_most_commented">被评论最多游戏</button>
+                <div class="label">9,5（从第十多起的五个游戏）</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="box_max_score">平均分最高游戏</button>
+                <div class="label">9,5（从第十高起的五个游戏）</div>
+            </div>
+        </div>
+        <br>
+        <label>媒体评分折线图：</label>
+        <div class="button-group">
+            <div class="button-with-label">
+                <button type="submit" name="button" value="line_platform_name">平台名称</button>
+                <div class="label">PlayStation,Xbox</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="line_publisher_name">发行商名称</button>
+                <div class="label">Nintendo,Microsoft</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="line_game_name">游戏名称</button>
+                <div class="label">Zelda,Final Fantasy</div>
+            </div>
+        </div>
+        <br>
+        <label>媒体-用户评分散点图：</label>
+        <div class="button-group">
+            <div class="button-with-label">
+                <button type="submit" name="button" value="scatter_platform_name">平台名称</button>
+                <div class="label">PlayStation,Xbox</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="scatter_publisher_name">发行商名称</button>
+                <div class="label">Nintendo,Microsoft</div>
+            </div>
+            <div class="button-with-label">
+                <button type="submit" name="button" value="scatter_game_name">游戏名称</button>
+                <div class="label">Zelda,Final Fantasy</div>
+            </div>
+        </div>
+    </form>
+    <div class="image">
+        {% if plot_url %}
+        <img src="data:image/png;base64,{{ plot_url }}" alt="plot">
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

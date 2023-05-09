@@ -47,7 +47,7 @@ def get_list_media_names_and_scores_by_count_range(btm, cnt):
     return cursor.fetchall()
 
 
-def get_list_media_names_and_scores_by_average_score_range(btm, cnt):
+def get_list_game_names_and_scores_by_average_score_range(btm, cnt):
     sql = '''
         WITH top AS (
             SELECT game_id FROM review

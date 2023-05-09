@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    flex-direction: row;
+}
+.form {
+    flex: 1;
+    padding: 20px;
+}
+.image {
+    flex: 3;
+    padding: 20px;
+}
+input {
+    display: block;
+    margin-bottom: 10px;
+    width: 330px;
+}
+button {
+    display: block;
+    margin-top: 2px;
+}
+.button-group {
+    display: flex;
+    flex-direction: column;
+}
+.button-with-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1px;
+}
+.label {
+    margin-left: 6px;
+    margin-top: 2px;
+}

@@ -15,3 +15,8 @@ def get_counts_and_years_by_all_ratings():
 def get_counts_and_years_by_publisher_names(names):
     data = count_bar_dao.get_counts_and_years_by_publisher_names(names)
     draw_util.draw_year_label_bars(data, 'Number of Games Released by Year and Publisher')
+
+
+def get_counts_and_years_by_genre_range(btm, cnt):
+    data = count_bar_dao.get_counts_and_years_by_genre_range(btm, cnt)
+    draw_util.draw_year_label_bars(data, 'Number of Games Released by Year and Genre')

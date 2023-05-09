@@ -1,35 +1,22 @@
-from wordcloud import WordCloud, STOPWORDS
-
 import dao.review_dao as review_dao
-
-stopwords = set(STOPWORDS)
-with open('..\\service\\stopwords.txt', 'r', encoding='utf-8') as f:
-    stopwords.update([line.strip() for line in f])
+import util.draw_util as draw_util
 
 
 def get_wordcloud_by_score_range(btm, top):
     data = review_dao.get_list_review_bodies_by_score_range(btm, top)
-    text = " ".join(review[0] for review in data)
-    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
-    return wordcloud
+    draw_util.draw_word_cloud(data)
 
 
 def get_wordcloud_by_game_name_like(name):
     data = review_dao.get_list_review_bodies_by_game_name_like(name)
-    text = " ".join(review[0] for review in data)
-    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
-    return wordcloud
+    draw_util.draw_word_cloud(data)
 
 
 def get_wordcloud_by_publisher_name_like(name):
     data = review_dao.get_list_review_bodies_by_publisher_name_like(name)
-    text = " ".join(review[0] for review in data)
-    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
-    return wordcloud
+    draw_util.draw_word_cloud(data)
 
 
 def get_wordcloud_by_media_name(name):
     data = review_dao.get_list_review_bodies_by_media_name(name)
-    text = " ".join(review[0] for review in data)
-    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
-    return wordcloud
+    draw_util.draw_word_cloud(data)

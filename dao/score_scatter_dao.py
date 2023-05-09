@@ -5,7 +5,7 @@ cursor = conn.cursor()
 
 
 def get_metascores_and_userscores_by_publisher_names(names):
-    format_names = " OR ".join(f"p.name LIKE '%{x}%'" for x in names)
+    format_names = "(" + " OR ".join(f"p.name LIKE '%{x}%'" for x in names) + ")"
     sql = '''
             SELECT p.name, g.metascore, g.userscore
             FROM game g JOIN publisher p on p.id = g.publisher_id
@@ -16,7 +16,7 @@ def get_metascores_and_userscores_by_publisher_names(names):
 
 
 def get_metascores_and_userscores_by_platform_names(names):
-    format_names = " OR ".join(f"p.name LIKE '%{x}%'" for x in names)
+    format_names = "(" + " OR ".join(f"p.name LIKE '%{x}%'" for x in names) + ")"
     sql = '''
             SELECT p.name, g.metascore, g.userscore
             FROM game g JOIN platform p on p.id = g.platform_id
@@ -27,7 +27,7 @@ def get_metascores_and_userscores_by_platform_names(names):
 
 
 def get_metascores_and_userscores_by_game_names(names):
-    format_names = " OR ".join(f"name LIKE '%{x}%'" for x in names)
+    format_names = "(" + " OR ".join(f"name LIKE '%{x}%'" for x in names) + ")"
     sql = '''
                 SELECT name, metascore, userscore
                 FROM game 

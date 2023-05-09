@@ -4,19 +4,19 @@ conn = pymysql.connect(host='localhost', port=3306, user='root', password='zbn12
 cursor = conn.cursor()
 
 
-def get_list_game_names_and_scores_top_count(count):
+def get_list_game_names_and_scores_by_count_range(btm, cnt):
     sql = '''
         WITH top AS (
             SELECT game_id FROM review
             GROUP BY game_id
             ORDER BY COUNT(*) DESC
-            LIMIT %s
+            LIMIT %s,%s
         )
         SELECT game.name, review.score
         FROM game JOIN review ON game.id = review.game_id
         WHERE game.id IN (SELECT game_id FROM top)
     '''
-    cursor.execute(sql, count)
+    cursor.execute(sql, (btm, cnt))
     return cursor.fetchall()
 
 
@@ -31,19 +31,35 @@ def get_list_game_names_and_scores_like_name(name):
     return cursor.fetchall()
 
 
-def get_list_media_names_and_scores_top_count(count):
+def get_list_media_names_and_scores_by_count_range(btm, cnt):
     sql = '''
         WITH top AS (
             SELECT media_id FROM review
             GROUP BY media_id
             ORDER BY COUNT(*) DESC
-            LIMIT %s
+            LIMIT %s,%s
         )
         SELECT media.name, review.score
         FROM media JOIN review ON media.id = review.media_id
         WHERE media.id IN (SELECT media_id FROM top)
     '''
-    cursor.execute(sql, count)
+    cursor.execute(sql, (btm, cnt))
+    return cursor.fetchall()
+
+
+def get_list_media_names_and_scores_by_average_score_range(btm, cnt):
+    sql = '''
+        WITH top AS (
+            SELECT game_id FROM review
+            GROUP BY game_id
+            ORDER BY AVG(score) DESC
+            LIMIT %s,%s
+        )
+        SELECT game.name, review.score
+        FROM game JOIN review ON game.id = review.game_id
+        WHERE game.id IN (SELECT game_id FROM top)
+    '''
+    cursor.execute(sql, (btm, cnt))
     return cursor.fetchall()
 
 

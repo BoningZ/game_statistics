@@ -1,4 +1,10 @@
 import matplotlib.pyplot as plt
+import seaborn as sns
+from wordcloud import WordCloud, STOPWORDS
+
+stopwords = set(STOPWORDS)
+with open('..\\util\\stopwords.txt', 'r', encoding='utf-8') as f:
+    stopwords.update([line.strip() for line in f])
 
 
 def draw_year_label_bars(data, title):
@@ -26,7 +32,6 @@ def draw_year_label_bars(data, title):
 
 
 def draw_score_scatter(data, title):
-    print(data)
     games = {}
     for datum in data:
         if datum[0] in games:
@@ -61,4 +66,53 @@ def draw_score_date_line(data, title):
     ax.legend()
     ax.set_title(title)
     fig.set_size_inches(20, 8)
+    plt.show()
+
+
+def draw_count_pie(data, title):
+    grouped_data = {}
+    for item in data:
+        entity = item[0]
+        if entity not in grouped_data:
+            grouped_data[entity] = {}
+        grouped_data[entity][item[1]] = item[2]
+
+    fig, axes = plt.subplots(nrows=1, ncols=len(grouped_data), figsize=(15, 7))
+    if len(grouped_data) == 1:
+        axes = [axes]
+
+    for i, (entity, data) in enumerate(grouped_data.items()):
+        labels = list(data.keys())
+        values = list(data.values())
+
+        axes[i].pie(values, labels=labels, autopct="%1.1f%%", radius=1)
+        axes[i].set_title(f"{entity.capitalize()}")
+        _, y = axes[i].get_ylim()
+        axes[i].title.set_position([0.5, y + 10.1])
+    plt.suptitle(title, fontsize=16)
+    plt.subplots_adjust(wspace=0.2)
+    plt.show()
+
+
+def draw_score_box(data, title, x_label):
+    data = {"name": [row[0] for row in data], "score": [row[1] for row in data]}
+    sns.set(style='ticks')
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    sns.boxplot(data=data, x='name', y='score', ax=ax)
+    ax.set_title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel('Score')
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right')
+    ax.tick_params(axis='x', labelsize=8)
+    sns.despine(trim=True)
+    plt.tight_layout()
+    plt.show()
+
+
+def draw_word_cloud(data):
+    text = " ".join(review[0] for review in data)
+    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis("off")
     plt.show()

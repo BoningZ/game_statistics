@@ -30,6 +30,7 @@ def draw_year_label_bars(data, title):
     ax.set_xlabel('Year')
     ax.set_ylabel('Count')
     ax.set_title(title)
+    plt.subplots_adjust(left=0.05, top=0.9)
     return to_url()
 
 
@@ -98,7 +99,7 @@ def draw_count_pie(data, title):
 def draw_score_box(data, title, x_label):
     data = {"name": [row[0] for row in data], "score": [row[1] for row in data]}
     sns.set(style='ticks')
-    fig, ax = plt.subplots(figsize=(15, 6))
+    fig, ax = plt.subplots(figsize=(15, 9))
 
     sns.boxplot(data=data, x='name', y='score', ax=ax)
     ax.set_title(title)
@@ -113,7 +114,10 @@ def draw_score_box(data, title, x_label):
 
 def draw_word_cloud(data):
     text = " ".join(review[0] for review in data)
-    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000).generate(text)
+    wordcloud = WordCloud(stopwords=stopwords, background_color="white", max_words=1000,
+                          width=1400, height=900).generate(text)
+    plt.figure(figsize=(14, 9))
+    plt.subplots_adjust(left=0, top=1, bottom=0, right=1)
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
     return to_url()
